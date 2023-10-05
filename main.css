@@ -53,8 +53,14 @@ body{
     margin: 1.2rem;
 }
 
-.body{
-}
+.container {
+  display: flex;
+  align-items: center; 
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 3px;
+ }
+ 
+ 
 
 
 
