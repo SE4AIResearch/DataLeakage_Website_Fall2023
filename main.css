@@ -59,6 +59,15 @@ body{
   grid-template-columns: 1fr 1fr 1fr;
   column-gap: 3px;
  }
+
+ table{
+  border: 1;
+ }
+
+ iframe {
+  border: 1px solid black;
+  width: 100%; 
+}
  
  
 
