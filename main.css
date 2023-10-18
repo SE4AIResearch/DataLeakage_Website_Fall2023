@@ -53,8 +53,23 @@ body{
     margin: 1.2rem;
 }
 
-.body{
+.responsive-google-slides {
+  position: relative;
+  height: 0;
+  overflow: hidden;
+  padding-top: 40%;
 }
+.responsive-google-slides iframe {
+  border: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  max-width: 600px;
+  max-height: 450px;
+  height: 100%;
+}
+
 
 
 
