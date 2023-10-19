@@ -53,6 +53,23 @@ body{
     margin: 1.2rem;
 }
 
+.container {
+  display: flex;
+  align-items: center; 
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 3px;
+ }
+
+ table{
+  border: 1;
+ }
+
+ iframe {
+  border: 1px solid black;
+  width: 100%; 
+  margin-bottom: 20%;
+}
+
 .responsive-google-slides {
   position: relative;
   height: 0;
@@ -69,6 +86,8 @@ body{
   max-height: 450px;
   height: 100%;
 }
+ 
+ 
 
 
 
