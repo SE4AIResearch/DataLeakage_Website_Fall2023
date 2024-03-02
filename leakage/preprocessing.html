@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="utf-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <title>Preprocessing Leakage</title>
+      <meta
+         name="description"
+         content="Information on preprocessing leakage."
+      />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link rel="stylesheet" href="" />
+   </head>
+   <body>
+      <main>
+         <h2>Preprocessing Leakage</h2>
+
+         <h3>What is preprocessing leakage?</h3>
+         <p>
+            Occurs when information from the test set influences the
+            preprocessing steps applied to the training set.
+         </p>
+
+         <h3>Causes of preprocessing leakage:</h3>
+         <p>
+            If preprocessing steps are influenced by information from the test
+            set, it can lead to overly optimistic performance estimates during
+            model development and may result in poor generalization to new,
+            unseen data.
+         </p>
+
+         <h3>Solutions for preprocessing leakage:</h3>
+         <ul>
+            <li>
+               Perform Preprocessing Independently: Apply preprocessing steps
+               based on information from the train set without considering the
+               test set.
+            </li>
+
+            <li>
+               Use Pipelines: Implement preprocessing steps within a pipeline to
+               ensure consistency and prevent information flow between the
+               training and test sets.
+            </li>
+
+            <li>
+               Handle Missing Values Appropriately: If missing values are
+               imputed, use methods based solely on information from the
+               training set. Avoid using global statistics or values derived
+               from the test set.
+            </li>
+         </ul>
+      </main>
+
+      <script src="" async defer></script>
+   </body>
+</html>
