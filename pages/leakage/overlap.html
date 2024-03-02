@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="utf-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <title>Overlap Leakage</title>
+      <meta name="description" content="Information on overlap leakage." />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link rel="stylesheet" href="" />
+   </head>
+
+   <body>
+      <main>
+         <h2>Overlap Leakage:</h2>
+         <h3>What is Overlap Leakage?</h3>
+         <p>
+            Overlap leakage refers to a situation in which there is
+            unintentional sharing or overlap of information between the training
+            and testing datasets in a machine learning model.
+         </p>
+
+         <h3>Causes of overlap leakage:</h3>
+         <p>
+            This can occur when the same or highly similar data points are
+            present in both the training and testing sets. When the model is
+            trained on a dataset that shares information with the test set, it
+            may lead to overly optimistic performance evaluations and may not
+            generalize well to new, unseen data.
+         </p>
+
+         <h3>Solutions for overlap leakage:</h3>
+         <ul>
+            <li>
+               Randomized Splitting: Use a randomized approach when splitting
+               the dataset into training and testing sets. This helps ensure
+               that instances in the training set are not overly similar to
+               instances in the test set.
+            </li>
+
+            <li>
+               Stratified Sampling: If the dataset has class imbalances, use
+               stratified sampling to maintain the distribution of classes in
+               both the training and testing sets. This can help prevent
+               situations where certain classes are overrepresented or
+               underrepresented in one of the sets.
+            </li>
+
+            <li>
+               Temporal Splitting: If the data has a temporal dimension, split
+               the dataset based on time. The training set should include data
+               from earlier time periods, while the testing set should include
+               data from later time periods. This helps simulate a more
+               realistic scenario where the model needs to generalize to future,
+               unseen data.
+            </li>
+
+            <li>
+               Geographical Splitting: In some cases, especially in spatial
+               data, geographical splitting can be useful. Ensure that instances
+               from specific geographical regions are present in either the
+               training or testing set but not in both.
+            </li>
+         </ul>
+
+         <p>
+            Managing the split between the training and testing datasets means
+            reducing the risk of overlap leakage and obtaining more reliable
+            performance evaluations for ML model.
+         </p>
+      </main>
+
+      <script src="" async defer></script>
+   </body>
+</html>

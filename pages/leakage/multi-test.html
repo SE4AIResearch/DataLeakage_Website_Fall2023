@@ -1,14 +1,64 @@
 <!DOCTYPE html>
 <html>
    <head>
-      <meta charset="utf-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <title></title>
-      <meta name="description" content="">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <link rel="stylesheet" href="">
+      <meta charset="utf-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <title>Multi-Test Leakage</title>
+      <meta name="description" content="Information on multi-test leakage." />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link rel="stylesheet" href="../../css/leakage.css" />
    </head>
+
    <body>
+      <main>
+         <h1>Multi-test Leakage</h1>
+         <h3>What is multi-test leakage?</h3>
+         <p>
+            Multi-test leakage refers to a situation in which information from
+            multiple tests or experiments is unintentionally shared or used in a
+            way that compromises the validity or independence of the tests.
+         </p>
+
+         <h3>Causes of multi-test leakage:</h3>
+         <p>
+            Potential for multi-test leakage arises because the tokenization and
+            padding processes are applied to the entire dataset before splitting
+            it into training, validation, and test sets.
+         </p>
+
+         <h3>Solutions for multi-test leakage:</h3>
+         <h4>Tokenization and padding within each split:</h4>
+         <ul>
+            <li>
+               Perform the tokenization and padding separately for the train,
+               val, and test sets after the split.
+            </li>
+            <li>
+               This ensures that the preprocessing steps are independent for
+               each set, reducing the risk of info leak.
+            </li>
+         </ul>
+
+         <h4>Tokenization and padding in a pipeline:</h4>
+         <ul>
+            <li>
+               Use a pipeline to encapsulate the tokenization and padding
+               processes.
+            </li>
+            <li>
+               This ensures that the same transformations are applied
+               consistently across different sets.
+            </li>
+         </ul>
+         
+         <p>
+            Overall, by applying tokenization and padding separately for each
+            split, one can ensure that the information regarding the structure
+            of the data (e.g., token sequences, padding) is not shared between
+            the train, val, and test sets, reducing the risk of multi-test
+            leakage.
+         </p>
+      </main>
       <script src="" async defer></script>
    </body>
 </html>
