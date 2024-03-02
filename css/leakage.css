@@ -1,0 +1,13 @@
+body {
+   color: bisque;
+   background-color: rgb(25, 26, 26);
+   font-family: 'Times New Roman', Times, serif;
+}
+
+main {
+   padding: 20px;
+}
+
+a:visited{
+   color:blueviolet
+}
