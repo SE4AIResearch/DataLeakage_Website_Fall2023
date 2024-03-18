@@ -68,7 +68,7 @@
             leakage.
          </p>
 
-         <!-- <h3>Example of Muli-test Leakage Code Displayed Below</h3>
+         <h3>Example of Muli-test Leakage Code Displayed Below</h3>
          <p>
             The tokenizer is fitted on the entire dataset, and tokenization and padding are applied to the entire dataset before splitting it. This introduces multi-test leakage because information from the validation and test sets influences the tokenization and padding process.
          </p>
@@ -131,7 +131,7 @@
             </code>
          </pre>
 
-         <h3>Fix Multi-Test Leakage Displayed Below</h3>
+         <!-- <h3>Fix Multi-Test Leakage Displayed Below</h3>
          <p>
             Fix multi-test leakage by performing tokenization and padding within each split separately, ensuring that the tokenizer is fit only on the training data within each split. 
             <ul>
