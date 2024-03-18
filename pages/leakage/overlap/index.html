@@ -77,10 +77,165 @@
             performance evaluations for ML model.
          </p>
 
-         <h3>Example of Overlap Leakage Code</h3>
+         <h3>Example of Overlap Leakage Code Displayed Below</h3>
+         <p>
+            Introducing overlap leakage means modifying the splitting process to ensure that some data points are shared between the training and testing sets. This can be achieved by customizing the splitting logic to include overlapping samples between the sets.
+            <ul>
+               <li>The dataset is split into a training set (80%) and a testing set (20%) with overlap leakage intentionally introduced.</li>
+               <li>The last 20% of the dataset is used for testing, with the first 10% of that portion being used as a validation set.</li>
+               <li>Tokenization and padding are performed separately for each split after the dataset is split into training, validation, and test sets.</li>
+            </ul>
+            By taking a portion of the testing set as the validation set and updating the testing set accordingly, we introduce overlap leakage intentionally. This means that some data points are shared between the training, validation, and testing sets, potentially leading to biased model evaluations.
+         </p>
+         <pre>
          <code>
-            this is overlap leakage code
-         </code>
+            import tensorflow as tf
+            import pandas as pd
+            import numpy as np
+            import string
+            import re
+            import nltk
+            from nltk.corpus import stopwords
+            from tensorflow.keras.preprocessing.text import Tokenizer
+            from tensorflow.keras.preprocessing.sequence import pad_sequences
+            
+            # Download NLTK resources
+            nltk.download('punkt')
+            nltk.download('stopwords')
+            
+            # Read dataset
+            dataset = pd.read_csv("/Users/Karina/Desktop/amazon_reviews.csv")
+            
+            # Lowercase reviewText column
+            dataset['reviewText'] = dataset['reviewText'].str.lower()
+            
+            # Define preprocessing functions
+            def no_punctuation_stopwords_numbers(text):
+                if isinstance(text, str):
+                    text = re.sub(f"[{re.escape(string.punctuation)}0-9]", "", text)
+                    tokens = nltk.word_tokenize(text)
+                    new_tokens = [word for word in tokens if word.lower() not in stopwords.words('english')]
+                    return ' '.join(new_tokens)
+                else:
+                    return ""
+            
+            # Apply preprocessing functions to the entire dataset
+            dataset['new_reviewText'] = dataset['reviewText'].apply(no_punctuation_stopwords_numbers)
+            
+            # Define tokenizer
+            max_words = 10000
+            max_sequence_length = 100
+            tokenizer = Tokenizer(num_words=max_words)
+            tokenizer.fit_on_texts(dataset['new_reviewText'])
+            
+            # Split data into training and testing sets with overlap leakage
+            # Take first 80% of data as training set
+            train_index = int(0.8 * len(dataset))
+            X_train = dataset['new_reviewText'][:train_index]
+            y_train = dataset['overall'][:train_index]
+            
+            # Take last 20% of data as testing set, including 10% for validation
+            X_test = dataset['new_reviewText'][train_index:]
+            y_test = dataset['overall'][train_index:]
+            
+            # Take the first 10% of testing set as validation set
+            valid_index = int(0.1 * len(X_test))
+            X_valid = X_test[:valid_index]
+            y_valid = y_test[:valid_index]
+            
+            # Update testing set to exclude samples used for validation
+            X_test = X_test[valid_index:]
+            y_test = y_test[valid_index:]
+            
+            # Tokenize and pad sequences
+            X_train_sequences = tokenizer.texts_to_sequences(X_train)
+            X_train_padded = pad_sequences(X_train_sequences, maxlen=max_sequence_length, padding='post', truncating='post')
+            
+            X_valid_sequences = tokenizer.texts_to_sequences(X_valid)
+            X_valid_padded = pad_sequences(X_valid_sequences, maxlen=max_sequence_length, padding='post', truncating='post')
+            
+            X_test_sequences = tokenizer.texts_to_sequences(X_test)
+            X_test_padded = pad_sequences(X_test_sequences, maxlen=max_sequence_length, padding='post', truncating='post')
+            
+            # Print shapes of train, validation, and test sets
+            print(X_train_padded.shape, y_train.shape)
+            print(X_valid_padded.shape, y_valid.shape)
+            print(X_test_padded.shape, y_test.shape)
+         </code>            
+         </pre>
+
+         <h3>Fix Overlap Leakage Displayed Below</h3>
+         <p>
+            Fix overlap leakage using randomized splitting. Revert to using the train_test_split function from scikit-learn, which ensures that the splitting is randomized.
+            <ul>
+               <li>The dataset is split into training, validation, and testing sets using train_test_split with a test size of 20% and a validation size of 10%. Random state is set for reproducibility.</li>
+               <li>Tokenization and padding are performed separately for each split after the dataset is split into training, validation, and test sets.</li>
+               <li>Randomized splitting ensures that the data points are randomly shuffled and divided into the desired sets, preventing any systematic bias or overlap leakage.</li>
+            </ul>
+         </p>
+
+         <pre>
+         <code>
+            import tensorflow as tf
+            import pandas as pd
+            import numpy as np
+            import string
+            import re
+            import nltk
+            from nltk.corpus import stopwords
+            from sklearn.model_selection import train_test_split
+            from tensorflow.keras.preprocessing.text import Tokenizer
+            from tensorflow.keras.preprocessing.sequence import pad_sequences
+            
+            # Download NLTK resources
+            nltk.download('punkt')
+            nltk.download('stopwords')
+            
+            # Read dataset
+            dataset = pd.read_csv("/Users/Karina/Desktop/amazon_reviews.csv")
+            
+            # Lowercase reviewText column
+            dataset['reviewText'] = dataset['reviewText'].str.lower()
+            
+            # Define preprocessing functions
+            def no_punctuation_stopwords_numbers(text):
+                if isinstance(text, str):
+                    text = re.sub(f"[{re.escape(string.punctuation)}0-9]", "", text)
+                    tokens = nltk.word_tokenize(text)
+                    new_tokens = [word for word in tokens if word.lower() not in stopwords.words('english')]
+                    return ' '.join(new_tokens)
+                else:
+                    return ""
+            
+            # Apply preprocessing functions to the entire dataset
+            dataset['new_reviewText'] = dataset['reviewText'].apply(no_punctuation_stopwords_numbers)
+            
+            # Define tokenizer
+            max_words = 10000
+            max_sequence_length = 100
+            tokenizer = Tokenizer(num_words=max_words)
+            tokenizer.fit_on_texts(dataset['new_reviewText'])
+            
+            # Split data into training, validation, and testing sets using randomized splitting
+            X_train, X_temp, y_train, y_temp = train_test_split(dataset['new_reviewText'], dataset['overall'], test_size=0.2, random_state=42)
+            X_valid, X_test, y_valid, y_test = train_test_split(X_temp, y_temp, test_size=0.5, random_state=42)
+            
+            # Tokenize and pad sequences
+            X_train_sequences = tokenizer.texts_to_sequences(X_train)
+            X_train_padded = pad_sequences(X_train_sequences, maxlen=max_sequence_length, padding='post', truncating='post')
+            
+            X_valid_sequences = tokenizer.texts_to_sequences(X_valid)
+            X_valid_padded = pad_sequences(X_valid_sequences, maxlen=max_sequence_length, padding='post', truncating='post')
+            
+            X_test_sequences = tokenizer.texts_to_sequences(X_test)
+            X_test_padded = pad_sequences(X_test_sequences, maxlen=max_sequence_length, padding='post', truncating='post')
+            
+            # Print shapes of train, validation, and test sets
+            print(X_train_padded.shape, y_train.shape)
+            print(X_valid_padded.shape, y_valid.shape)
+            print(X_test_padded.shape, y_test.shape)
+         </code>            
+         </pre>
 
          <div class="nav">
             <h4>Other types of leakage:</h4>
