@@ -62,68 +62,11 @@
          <p>
             Introducing preprocessing leakage means the tokenizer is mistakenly fitted on the entire dataset, including the validation and test sets. This will cause the tokenizer to learn from information that should be unseen during model development, leading to preprocessing leakage.
          </p>
-         <pre>
-            <code>
-               import tensorflow as tf
-               import pandas as pd
-               import numpy as np
-               import string
-               import re
-               import nltk
-               from nltk.corpus import stopwords
-               from sklearn.model_selection import train_test_split
-               from tensorflow.keras.preprocessing.text import Tokenizer
-               from tensorflow.keras.preprocessing.sequence import pad_sequences
-               
-               nltk.download('punkt')
-               nltk.download('stopwords')
-               
-               # Read dataset
-               dataset = pd.read_csv("/Users/Karina/Desktop/amazon_reviews.csv")
-               
-               # Lowercase reviewText column
-               dataset['reviewText'] = dataset['reviewText'].str.lower()
-               
-               # Define preprocessing functions
-               def no_punctuation_stopwords_numbers(text):
-                   if isinstance(text, str):
-                       text = re.sub(f"[{re.escape(string.punctuation)}0-9]", "", text)
-                       tokens = nltk.word_tokenize(text)
-                       new_tokens = [word for word in tokens if word.lower() not in stopwords.words('english')]
-                       return ' '.join(new_tokens)
-                   else:
-                       return ""
-               
-               # Apply preprocessing functions
-               dataset['new_reviewText'] = dataset['reviewText'].apply(no_punctuation_stopwords_numbers)
-               
-               # Fit tokenizer on the entire dataset (introducing preprocessing leakage)
-               max_words = 10000
-               max_sequence_length = 100
-               tokenizer = Tokenizer(num_words=max_words)
-               tokenizer.fit_on_texts(dataset['new_reviewText'])
-               
-               # Split data into train, validation, and test sets
-               X_train, X_temp, y_train, y_temp = train_test_split(dataset['new_reviewText'], dataset['overall'], test_size=0.2, random_state=42)
-               X_valid, X_test, y_valid, y_test = train_test_split(X_temp, y_temp, test_size=0.5, random_state=42)
-               
-               # Tokenize and pad sequences
-               sequences_train = tokenizer.texts_to_sequences(X_train)
-               sequences_valid = tokenizer.texts_to_sequences(X_valid)
-               sequences_test = tokenizer.texts_to_sequences(X_test)
-               
-               X_train_padded = pad_sequences(sequences_train, maxlen=max_sequence_length, padding='post', truncating='post')
-               X_valid_padded = pad_sequences(sequences_valid, maxlen=max_sequence_length, padding='post', truncating='post')
-               X_test_padded = pad_sequences(sequences_test, maxlen=max_sequence_length, padding='post', truncating='post')
-               
-               # Print shapes of train, validation, and test sets
-               print(X_train_padded.shape, y_train.shape)
-               print(X_valid_padded.shape, y_valid.shape)
-               print(X_test_padded.shape, y_test.shape)
-            </code>
-         </pre>
+         <div class="image">
+            <img src="../../../images/preprocessing(unfixed).png" alt="Preprocessing Leakage Code Unfixed" class="center">
+         </div>
 
-         <!-- <h3>Fix Preprocessing Leakage Displayed Below</h3>
+         <h3>Fix Preprocessing Leakage Displayed Below</h3>
          <p>
             Fix preprocessing leakage by ensuring that preprocessing steps are performed independently for the training, validation, and test sets.
             <ul>
@@ -132,66 +75,9 @@
                <li>The tokenizer is fitted only on the training data, and then tokenization and padding are performed independently for each set using the fitted tokenizer, ensuring preprocessing consistency and preventing preprocessing leakage.</li>
             </ul>
          </p>
-
-         <pre>
-            <code>
-               import tensorflow as tf
-               import pandas as pd
-               import numpy as np
-               import string
-               import re
-               import nltk
-               from nltk.corpus import stopwords
-               from sklearn.model_selection import train_test_split
-               from tensorflow.keras.preprocessing.text import Tokenizer
-               from tensorflow.keras.preprocessing.sequence import pad_sequences
-               
-               nltk.download('punkt')
-               nltk.download('stopwords')
-               
-               # Read dataset
-               dataset = pd.read_csv("/Users/Karina/Desktop/amazon_reviews.csv")
-               
-               # Lowercase reviewText column
-               dataset['reviewText'] = dataset['reviewText'].str.lower()
-               
-               # Define preprocessing functions
-               def preprocess_text(text):
-                   if isinstance(text, str):
-                       text = re.sub(f"[{re.escape(string.punctuation)}0-9]", "", text)
-                       tokens = nltk.word_tokenize(text)
-                       new_tokens = [word for word in tokens if word.lower() not in stopwords.words('english')]
-                       return ' '.join(new_tokens)
-                   else:
-                       return ""
-               
-               # Apply preprocessing independently to each set
-               X_train, X_temp, y_train, y_temp = train_test_split(dataset['reviewText'], dataset['overall'], test_size=0.2, random_state=42)
-               X_valid, X_test, y_valid, y_test = train_test_split(X_temp, y_temp, test_size=0.5, random_state=42)
-               
-               X_train = X_train.apply(preprocess_text)
-               X_valid = X_valid.apply(preprocess_text)
-               X_test = X_test.apply(preprocess_text)
-               
-               # Define tokenizer
-               max_words = 10000
-               max_sequence_length = 100
-               tokenizer = Tokenizer(num_words=max_words)
-               
-               # Fit tokenizer on training data
-               tokenizer.fit_on_texts(X_train)
-               
-               # Tokenize and pad sequences for each set
-               X_train_padded = pad_sequences(tokenizer.texts_to_sequences(X_train), maxlen=max_sequence_length, padding='post', truncating='post')
-               X_valid_padded = pad_sequences(tokenizer.texts_to_sequences(X_valid), maxlen=max_sequence_length, padding='post', truncating='post')
-               X_test_padded = pad_sequences(tokenizer.texts_to_sequences(X_test), maxlen=max_sequence_length, padding='post', truncating='post')
-               
-               # Print shapes of train, validation, and test sets
-               print(X_train_padded.shape, y_train.shape)
-               print(X_valid_padded.shape, y_valid.shape)
-               print(X_test_padded.shape, y_test.shape)
-            </code>
-         </pre> -->
+         <div class="image">
+            <img src="../../../images/preprocessing(fixed).png" alt="Preprocessing Leakage Code Fixed" class="center">
+         </div>
 
          <div class="nav">
             <h4>Other types of leakage:</h4>
