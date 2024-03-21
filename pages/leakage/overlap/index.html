@@ -87,82 +87,8 @@
             </ul>
             By taking a portion of the testing set as the validation set and updating the testing set accordingly, we introduce overlap leakage intentionally. This means that some data points are shared between the training, validation, and testing sets, potentially leading to biased model evaluations.
          </p>
-         <pre>
-            <code>
-               import tensorflow as tf
-               import pandas as pd
-               import numpy as np
-               import string
-               import re
-               import nltk
-               from nltk.corpus import stopwords
-               from tensorflow.keras.preprocessing.text import Tokenizer
-               from tensorflow.keras.preprocessing.sequence import pad_sequences
-               
-               # Download NLTK resources
-               nltk.download('punkt')
-               nltk.download('stopwords')
-               
-               # Read dataset
-               dataset = pd.read_csv("/Users/Karina/Desktop/amazon_reviews.csv")
-               
-               # Lowercase reviewText column
-               dataset['reviewText'] = dataset['reviewText'].str.lower()
-               
-               # Define preprocessing functions
-               def no_punctuation_stopwords_numbers(text):
-                   if isinstance(text, str):
-                       text = re.sub(f"[{re.escape(string.punctuation)}0-9]", "", text)
-                       tokens = nltk.word_tokenize(text)
-                       new_tokens = [word for word in tokens if word.lower() not in stopwords.words('english')]
-                       return ' '.join(new_tokens)
-                   else:
-                       return ""
-               
-               # Apply preprocessing functions to the entire dataset
-               dataset['new_reviewText'] = dataset['reviewText'].apply(no_punctuation_stopwords_numbers)
-               
-               # Define tokenizer
-               max_words = 10000
-               max_sequence_length = 100
-               tokenizer = Tokenizer(num_words=max_words)
-               tokenizer.fit_on_texts(dataset['new_reviewText'])
-               
-               # Split data into training and testing sets with overlap leakage
-               # Take first 80% of data as training set
-               train_index = int(0.8 * len(dataset))
-               X_train = dataset['new_reviewText'][:train_index]
-               y_train = dataset['overall'][:train_index]
-               
-               # Take last 20% of data as testing set, including 10% for validation
-               X_test = dataset['new_reviewText'][train_index:]
-               y_test = dataset['overall'][train_index:]
-               
-               # Take the first 10% of testing set as validation set
-               valid_index = int(0.1 * len(X_test))
-               X_valid = X_test[:valid_index]
-               y_valid = y_test[:valid_index]
-               
-               # Update testing set to exclude samples used for validation
-               X_test = X_test[valid_index:]
-               y_test = y_test[valid_index:]
-               
-               # Tokenize and pad sequences
-               X_train_sequences = tokenizer.texts_to_sequences(X_train)
-               X_train_padded = pad_sequences(X_train_sequences, maxlen=max_sequence_length, padding='post', truncating='post')
-               
-               X_valid_sequences = tokenizer.texts_to_sequences(X_valid)
-               X_valid_padded = pad_sequences(X_valid_sequences, maxlen=max_sequence_length, padding='post', truncating='post')
-               
-               X_test_sequences = tokenizer.texts_to_sequences(X_test)
-               X_test_padded = pad_sequences(X_test_sequences, maxlen=max_sequence_length, padding='post', truncating='post')
-               
-               # Print shapes of train, validation, and test sets
-               print(X_train_padded.shape, y_train.shape)
-               print(X_valid_padded.shape, y_valid.shape)
-               print(X_test_padded.shape, y_test.shape)               
-            </code>
-         </pre>
+         
+         <script src="https://gist.github.com/cindy795tran/75bf0342834ce215ed7d37a0dd8827ac.js"></script>
 
          <h3>Fix Overlap Leakage Displayed Below</h3>
          <p>
@@ -174,9 +100,7 @@
             </ul>
          </p>
 
-         <div class="image">
-            <img src="../../../images/overlap(fixed).png" alt="Overlap Leakage Code Fixed" class="center">
-         </div>
+         <script src="https://gist.github.com/cindy795tran/3b408a2c8870d2316f565505f47d2bd2.js"></script>
          
          <div class="nav">
             <h4>Other types of leakage:</h4>
