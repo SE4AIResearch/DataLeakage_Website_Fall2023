@@ -79,32 +79,28 @@
 
          <h3>Example of Overlap Leakage Code Displayed Below</h3>
          <p>
-            Introducing overlap leakage means modifying the splitting process to ensure that some data points are shared between the training and testing sets. This can be achieved by customizing the splitting logic to include overlapping samples between the sets.
-            <ul>
-               <li>The dataset is split into a training set (80%) and a testing set (20%) with overlap leakage intentionally introduced.</li>
-               <li>The last 20% of the dataset is used for testing, with the first 10% of that portion being used as a validation set.</li>
-               <li>Tokenization and padding are performed separately for each split after the dataset is split into training, validation, and test sets.</li>
-            </ul>
-            By taking a portion of the testing set as the validation set and updating the testing set accordingly, we introduce overlap leakage intentionally. This means that some data points are shared between the training, validation, and testing sets, potentially leading to biased model evaluations.
+            In this example below, the code had sampling happen before split. As seen in the code, 
+            line 9 has fit_resample(X,y) before train_test_split. 
          </p>
-         
-         <div class="responsive-google-docs">
-            <script src="https://gist.github.com/cindy795tran/75bf0342834ce215ed7d37a0dd8827ac.js"></script>
+
+         <script src="https://gist.github.com/cindy795tran/bb7596387f986b6477002e7c6965bc87.js"></script>
+
+         <h3>Example of How Quick Fix Would Be Performed</h3>
+         <p>
+            When you hover and click on the highlighted issue, you can see the pop up that says "Potential overlap leakage
+            associated with this variable". To do the quick fix, you would click on the button underneath it "Swap splitting and sampling".
+         </p>
+         <div class="image">
+            <img src="../../../images/overlap-quickfix.png" alt="overlap-quickfix">
          </div>
 
          <h3>Fix Overlap Leakage Displayed Below</h3>
          <p>
-            Fix overlap leakage using randomized splitting. Revert to using the train_test_split function from scikit-learn, which ensures that the splitting is randomized.
-            <ul>
-               <li>The dataset is split into training, validation, and testing sets using train_test_split with a test size of 20% and a validation size of 10%. Random state is set for reproducibility.</li>
-               <li>Tokenization and padding are performed separately for each split after the dataset is split into training, validation, and test sets.</li>
-               <li>Randomized splitting ensures that the data points are randomly shuffled and divided into the desired sets, preventing any systematic bias or overlap leakage.</li>
-            </ul>
+            Once the quick fix is performed, you can see that the train_test_split line is happening before the 
+            fit_resample line.
          </p>
 
-         <div class="responsive-google-docs">
-         <script src="https://gist.github.com/cindy795tran/3b408a2c8870d2316f565505f47d2bd2.js"></script>
-         </div>
+         <script src="https://gist.github.com/cindy795tran/f64021175497534b85cb55919b6cb8ab.js"></script>
          
          <div class="nav">
             <h4>Other types of leakage:</h4>

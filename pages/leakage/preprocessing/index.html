@@ -60,26 +60,28 @@
 
          <h3>Example of Preprocessing Leakage Code Displayed Below</h3>
          <p>
-            Introducing preprocessing leakage means the tokenizer is mistakenly fitted on the entire dataset, including the validation and test sets. This will cause the tokenizer to learn from information that should be unseen during model development, leading to preprocessing leakage.
+            In the example shown below, there is preprocessing leakage because there is no split before feature 
+            selection.
          </p>
 
-         <div class="responsive-google-docs">
-         <script src="https://gist.github.com/cindy795tran/a88b9240b912bdac53a3d81e6d92d22c.js"></script>
+         <script src="https://gist.github.com/cindy795tran/d7334c53961e3f2cc3e7cf5e77b45b40.js"></script>
+
+         <h3>Example of How Quick Fix Would Be Performed</h3>
+         <p>
+            When you hover and click on the highlighted issue, you can see the pop up that says "Potential preprocessing leakage associated with this
+            variable. See Line 12 which contains the source of the leakage". To do the quick fix, you would click on the button underneath it "Perform split
+            before feature selection".
+         </p>
+         <div class="image">
+            <img src="../../../images/preprocessing-quickfix.png" alt="preprocessing-quickfix">
          </div>
 
          <h3>Fix Preprocessing Leakage Displayed Below</h3>
          <p>
-            Fix preprocessing leakage by ensuring that preprocessing steps are performed independently for the training, validation, and test sets.
-            <ul>
-               <li>The preprocessing function preprocess_text checks if the input is a string before applying preprocessing steps to avoid TypeError.</li>
-               <li>Preprocessing is applied independently to each set after splitting the dataset to ensure that each set is processed separately, preventing preprocessing leakage.</li>
-               <li>The tokenizer is fitted only on the training data, and then tokenization and padding are performed independently for each set using the fitted tokenizer, ensuring preprocessing consistency and preventing preprocessing leakage.</li>
-            </ul>
+            In the fix, you can see that before the gbc.fit(X_train,y_train) line, the split() line is written before it.
          </p>
 
-         <div class="responsive-google-docs">
-         <script src="https://gist.github.com/cindy795tran/c5dfdf93b19931f9a2ccf1de38eea443.js"></script>
-         </div>
+         <script src="https://gist.github.com/cindy795tran/fe01d134aecdddfc9eac1ceb5cb75749.js"></script>
          
          <div class="nav">
             <h4>Other types of leakage:</h4>

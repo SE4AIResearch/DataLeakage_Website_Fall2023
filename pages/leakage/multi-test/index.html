@@ -70,25 +70,27 @@
 
          <h3>Example of Muli-test Leakage Code Displayed Below</h3>
          <p>
-            The tokenizer is fitted on the entire dataset, and tokenization and padding are applied to the entire dataset before splitting it. This introduces multi-test leakage because information from the validation and test sets influences the tokenization and padding process.
+            In the example shown shown below, X_test is used more than once (in line 14 and line 18) hence the mult-test leakage.
          </p>
-         <div class="responsive-google-docs">
-         <script src="https://gist.github.com/cindy795tran/a13961c087cb96282d670199ed22eabd.js"></script>
-         </div>
+         <script src="https://gist.github.com/cindy795tran/ef1382e548d49a2ed8c2400de257a846.js"></script>
 
+         <h3>Example of How Quick Fix Would Be Performed</h3>
+         <p>
+            The variable that is being used more than once would be highlighted and when you click on it you would see a pop up that says
+            "Potential multi-test leakage associated with this variable.Avoid reusing the same test data in seperate evaluations". Under this 
+            sentence, you'll see a button that says "Use new test data for each evaluation". Once you click on this button, the quick fix would be
+            performed. 
+         </p>
+         <div class="image">
+            <img src="../../../images/multi-test-quickfix.png" alt="multi-test-quickfix">
+         </div>
+         
          <h3>Fix Multi-Test Leakage Displayed Below</h3>
          <p>
-            Fix multi-test leakage by performing tokenization and padding within each split separately, ensuring that the tokenizer is fit only on the training data within each split. 
-            <ul>
-               <li>The dataset is split into training, validation, and test sets before any preprocessing.</li>
-               <li>Tokenization and padding are performed separately within each split, ensuring that the tokenizer is fit only on the training data within each split and applied consistently to tokenize and pad sequences for the training, validation, and test sets.</li>
-               <li>This approach prevents multi-test leakage by ensuring that the preprocessing steps are independent for each split.</li>
-            </ul>
+            Once fixed, you see can that line 14 and line 18 now have different variable names for X_test. Line 14 X_test is now 
+            renamed to X_test_0 and line 18 X_test is renamed to X_test_1. 
          </p>
-
-         <div class="responsive-google-docs">
-            <script src="https://gist.github.com/cindy795tran/7202324d3760ebb90425e559b6ad8880.js"></script>
-         </div>
+         <script src="https://gist.github.com/cindy795tran/8b81227b3c2d4a8daa12bf80f488233b.js"></script>
 
          <div class="nav">
             <h4>Other types of leakage:</h4>
