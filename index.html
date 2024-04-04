@@ -26,21 +26,14 @@
    <div class="project-description">
       <h2>Project Description</h2>
       <p>
-         Bad coding practices don't only happen in software development settings.
-         Code written to train and evaluate machine learning (ML)
-         models may contain bugs just like software code. Various forms of <i>data leakage</i>,
-         such indistinguishable training and test data, can lead to an overestimation of a model's
-         accuracy, which in turn can lead to the deployment of a low quality model.
-         Low quality models can do harm to the people that are supposed to benefit from them. There are several
-         real-world examples of poor quality models that have been responsible for discrimination and death.
-         Amazon had to stop using a recruiting tool that was created with ML because it showed bias against women.
-         A Tesla vehicle on autopilot once ran a red light and killed two people.
-         There is no question that ML engineers have a duty to produce high quality models and avoid bad coding
-         practices
-         that cause data leakage.
-         Unfortunately, however, data leakage can be difficult to detect. Therefore, we aim to develop a tool (more
-         specifically, an IDE plugin) that can detect common
-         forms of data leakage in ML code.
+         Code quality is of paramount importance in all types of software development settings. 
+         Our project seeks to enable machine learning (ML) engineers to write better code by helping them find and fix instances of Data Leakage in their models. 
+         Data Leakage is a problem where an ML model is unintentionally trained on data that is not present in the training dataset. 
+         As a result, the model effectively "memorizes" the data it trains on, leading to an overly optimistic estimate of model performance and an inability to make generalized predictions. 
+         To avoid introducing Data Leakage into their code, ML developers must carefully separate their data into training, evaluation, and test sets. 
+         Training data should be used to train the model, evaluation data should be used to confirm the accuracy of a model repeatedly, and test data should be used only once to determine the accuracy of a production-ready model. 
+         According to the paper Data Leakage in Notebooks: Static Detection and Better Processes, many model designers do not effectively separate their testing data from their evaluation and training data. 
+         We are developing a plugin for the PyCharm IDE that identifies instances of data leakage in ML code and provides suggestions on how to remove the leakage. 
       </p>
       <p>Source: Yang, C., Brower-Sinning, R. A., Lewis, G., & Kästner, C. (2022). <i>Data leakage in notebooks: Static
             detection and Better Processes.</i> Proceedings of the 37th IEEE/ACM International Conference on Automated
@@ -59,6 +52,11 @@
       <p>
          Shall Be Updated Soon With Next Release.
       </p>
+   </div>
+
+   <div class="image">
+      <h4>Poster Design</h4>
+      <a href="https://lh3.googleusercontent.com/drive-viewer/AKGpihZtcWC_TA3AmGY6lvaw-T_6TBdA6XHpdA8ujsWl4EgS26cwTnUh-w_N3A_GNw25NO4OF4gkWAXhr6Fa83Z-NnMzPX-0uPriSw=s1600-v0?source=screenshot.guru"> <img src="https://lh3.googleusercontent.com/drive-viewer/AKGpihZtcWC_TA3AmGY6lvaw-T_6TBdA6XHpdA8ujsWl4EgS26cwTnUh-w_N3A_GNw25NO4OF4gkWAXhr6Fa83Z-NnMzPX-0uPriSw=s1600-v0" length="500" width="1000"/> </a>
    </div>
 
    <div>
